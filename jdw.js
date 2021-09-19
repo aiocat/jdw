@@ -7,6 +7,7 @@ class JDWindow {
     this.titlebarHeight = options?.titlebar?.height || 20;
 
     this.__window = document.createElement("div");
+    this.__app = document.createElement("div");
     this.__titleBar = document.createElement("div");
     this.__titleBarTitleElement = document.createElement("p");
 
@@ -20,15 +21,23 @@ class JDWindow {
 
   __prepareWindows() {
     this.__titleBarTitleElement.style.display = "inline-block";
+    this.__titleBarTitleElement.style.margin = "0";
+
     this.__window.style.margin = "0";
     this.__window.style.position = "absolute";
+
     this.__titleBar.style.margin = "0";
     this.__titleBar.style.position = "relative";
-    this.__titleBarTitleElement.style.margin = "0";
+
+    this.__app.style.margin = "0";
   }
 
   windowCss(css) {
     this.__window.style = css;
+  }
+
+  appCss(css) {
+    this.__app.style = css;
   }
 
   titleBarCss(css) {
@@ -88,6 +97,10 @@ class JDWindow {
     this.__window.style.overflow = "auto";
   }
 
+  scrollable() {
+      this.__app.style.overflow = "auto";
+  }
+
   draw() {
     this.__prepareWindows();
 
@@ -101,7 +114,7 @@ class JDWindow {
     this.__titleBarTitleElement.innerText = this.titlebarTitle;
 
     this.__titleBar.append(this.__titleBarTitleElement, this.__rightDiv);
-    this.__window.appendChild(this.__titleBar);
+    this.__window.append(this.__titleBar, this.__app);
     document.body.appendChild(this.__window);
   }
 }
