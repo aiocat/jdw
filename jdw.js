@@ -9,6 +9,13 @@ class JDWindow {
     this.__window = document.createElement("div");
     this.__titleBar = document.createElement("div");
     this.__titleBarTitleElement = document.createElement("p");
+
+    this.__rightDiv = document.createElement("span")
+    this.__rightDiv.style.float = "right"
+
+    this.__titleBarCloseBtn = document.createElement("button");
+    this.__titleBarCloseBtn.innerText = "X"
+    this.__titleBarCloseBtn.onclick = () => this.__window.remove()
   }
 
   __prepareWindows() {
@@ -26,6 +33,18 @@ class JDWindow {
 
   titleBarCss(css) {
     this.__titleBar.style = css;
+  }
+
+  titleCss(css) {
+    this.__titleBarTitleElement.style = css
+  }
+
+  closeButtonCss(css) {
+    this.__titleBarCloseBtn.style = css
+  }
+
+  setCloseButtonContent(content) {
+    this.__titleBarCloseBtn.innerText = content
   }
 
   draggable() {
@@ -71,6 +90,9 @@ class JDWindow {
 
   draw() {
     this.__prepareWindows();
+
+    this.__rightDiv.appendChild(this.__titleBarCloseBtn)
+
     this.__window.style.height = `${this.height}px`;
     this.__window.style.width = `${this.width}px`;
 
@@ -78,7 +100,7 @@ class JDWindow {
     this.__titleBar.style.height = `${this.titlebarHeight}px`;
     this.__titleBarTitleElement.innerText = this.titlebarTitle;
 
-    this.__titleBar.appendChild(this.__titleBarTitleElement);
+    this.__titleBar.append(this.__titleBarTitleElement, this.__rightDiv);
     this.__window.appendChild(this.__titleBar);
     document.body.appendChild(this.__window);
   }
