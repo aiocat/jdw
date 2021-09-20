@@ -3,13 +3,13 @@
  * @param {object} options - The window options.
  */
 class JDWindow {
-  constructor(options) {
+  constructor({ height, width, titlebar, runBeforeClose }) {
     // Create window, titlebar, title, close button. Also edit settings
-    this.height = options?.height || 400;
-    this.width = options?.width || 400;
+    this.height = height || 400;
+    this.width = width || 400;
 
-    this.titlebarTitle = options?.titlebar?.title || "JDW";
-    this.titlebarHeight = options?.titlebar?.height || 20;
+    this.titlebarTitle = titlebar?.title || "JDW";
+    this.titlebarHeight = titlebar?.height || 20;
 
     this.__window = document.createElement("div");
     this.__app = document.createElement("div");
@@ -18,7 +18,13 @@ class JDWindow {
 
     this.__titleBarCloseBtn = document.createElement("button");
     this.__titleBarCloseBtn.innerText = "X";
-    this.__titleBarCloseBtn.onclick = () => this.__window.remove();
+    this.__titleBarCloseBtn.onclick = () => {
+      if (runBeforeClose) {
+        runBeforeClose() === true ? this.__window.remove() : 0;
+      } else {
+        this.__window.remove();
+      }
+    };
   }
 
   /** Prepare windows. */
@@ -140,7 +146,7 @@ class JDWindow {
   }
 
   /**
-   *  Add an element to the app.
+   * Add an element to the app.
    * @param {any} element - The element will be added.
    */
   addElement(element) {
@@ -155,12 +161,18 @@ class JDWindow {
     this.__app.append(...elements);
   }
 
-  /** Draw the window. */
-  draw() {
+  /**
+   * Draw the window.
+   * @param {int} posX - Left position that window will be spawned at (px).
+   * @param {int} posY - Top position that window will be spawned at (px).
+   */
+  draw(posX, posY) {
     this.__prepareWindows();
 
     this.__window.style.height = `${this.height}px`;
     this.__window.style.width = `${this.width}px`;
+    this.__window.style.left = `${posX}px`;
+    this.__window.style.top = `${posY}px`;
 
     this.__titleBar.style.width = "100%";
     this.__titleBar.style.height = `${this.titlebarHeight}px`;
