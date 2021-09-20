@@ -11,9 +11,6 @@ class JDWindow {
     this.__titleBar = document.createElement("div");
     this.__titleBarTitleElement = document.createElement("p");
 
-    this.__rightDiv = document.createElement("span")
-    this.__rightDiv.style.float = "right"
-
     this.__titleBarCloseBtn = document.createElement("button");
     this.__titleBarCloseBtn.innerText = "X"
     this.__titleBarCloseBtn.onclick = () => this.__window.remove()
@@ -26,10 +23,16 @@ class JDWindow {
     this.__window.style.margin = "0";
     this.__window.style.position = "absolute";
 
-    this.__titleBar.style.margin = "0";
+    this.__titleBar.style.margin = "0 auto";
     this.__titleBar.style.position = "relative";
+    this.__titleBar.style.display = "flex"
+    this.__titleBar.style.justifyContent = "space-between"
+    this.__titleBar.style.alignItems = "center"
 
+    this.__app.style.margin = "0 auto";
+    this.__app.style.position = "relative";
     this.__app.style.margin = "0";
+    this.__app.style.maxHeight = `${this.height - this.titlebarHeight}px`;
   }
 
   windowCss(css) {
@@ -101,10 +104,16 @@ class JDWindow {
       this.__app.style.overflow = "auto";
   }
 
+  addElement(element) {
+      this.__app.appendChild(element)
+  }
+
+  addElements(...elements) {
+      this.__app.append(...elements)
+  }
+
   draw() {
     this.__prepareWindows();
-
-    this.__rightDiv.appendChild(this.__titleBarCloseBtn)
 
     this.__window.style.height = `${this.height}px`;
     this.__window.style.width = `${this.width}px`;
@@ -113,7 +122,7 @@ class JDWindow {
     this.__titleBar.style.height = `${this.titlebarHeight}px`;
     this.__titleBarTitleElement.innerText = this.titlebarTitle;
 
-    this.__titleBar.append(this.__titleBarTitleElement, this.__rightDiv);
+    this.__titleBar.append(this.__titleBarTitleElement, this.__titleBarCloseBtn);
     this.__window.append(this.__titleBar, this.__app);
     document.body.appendChild(this.__window);
   }
