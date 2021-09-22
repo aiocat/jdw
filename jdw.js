@@ -47,6 +47,11 @@ class JDWindow {
     this.__app.style.maxHeight = `${this.height - this.titlebarHeight}px`;
   }
 
+  /** Remove the close button. */
+  removeCloseButton() {
+    this.__titleBarCloseBtn.remove();
+    this.__titleBarCloseBtn = undefined;
+  }
   /**
    * Edit window css
    * @param {string} css - The css for the window.
@@ -178,10 +183,11 @@ class JDWindow {
     this.__titleBar.style.height = `${this.titlebarHeight}px`;
     this.__titleBarTitleElement.innerText = this.titlebarTitle;
 
-    this.__titleBar.append(
-      this.__titleBarTitleElement,
-      this.__titleBarCloseBtn
+    this.__titleBar.appendChild(
+      this.__titleBarTitleElement
     );
+
+    if (this.__titleBarCloseBtn) this.__titleBar.appendChild(this.__titleBarCloseBtn)
     this.__window.append(this.__titleBar, this.__app);
     document.body.appendChild(this.__window);
   }
